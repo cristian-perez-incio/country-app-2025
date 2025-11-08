@@ -12,10 +12,18 @@ export class CountryService {
   private http = inject(HttpClient);
 
   searchByCapital(query: string): Observable<Country[]> {
+    return this.search('capital', query);
+  }
+
+  searchByCountryName(query: string): Observable<Country[]> {
+    return this.search('name', query);
+  }
+
+  private search(endpoint: string, query: string): Observable<Country[]> {
     query = query.toLowerCase();
 
     return this.http
-      .get<RESTCountry[]>(`${environment.restCountriesBaseUrl}/capital/${query}`)
+      .get<RESTCountry[]>(`${environment.restCountriesBaseUrl}/${endpoint}/${query}`)
       .pipe(
         map(CountryMapper.mapRESTCountriesToCountries),
         catchError(error => {
