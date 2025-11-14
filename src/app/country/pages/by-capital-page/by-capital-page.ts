@@ -4,7 +4,7 @@ import { of } from 'rxjs';
 import { List } from "../../components/list/list";
 import { SearchInput } from "../../components/search-input/search-input";
 import { CountryService } from '../../services/country.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'country-by-capital-page',
@@ -14,6 +14,8 @@ import { ActivatedRoute } from '@angular/router';
 export class ByCapitalPage {
 
   countryService = inject(CountryService);
+
+  router = inject(Router);
 
   activatedRoute = inject(ActivatedRoute);
 
@@ -25,6 +27,11 @@ export class ByCapitalPage {
     params: () => ({ query: this.query() }),
     stream: ({ params }) => {
       if (!params.query) return of([]);
+      this.router.navigate(['/country/by-capital'], {
+        queryParams: {
+          query: params.query
+        }
+      });
       return this.countryService.searchByCapital(params.query);
     }
   });
