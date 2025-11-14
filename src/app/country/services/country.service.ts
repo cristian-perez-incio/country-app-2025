@@ -27,6 +27,10 @@ export class CountryService {
       );
   }
 
+  searchByRegion(region: string): Observable<Country[]> {
+    return this.search('region', region);
+  }
+
   private search(endpoint: string, query: string, due?: number): Observable<Country[]> {
     query = query.toLowerCase();
     const cacheKey = `${endpoint}|${query}`;
